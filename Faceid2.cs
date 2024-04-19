@@ -53,6 +53,7 @@ public class Identity
 
 public class Authenticator
 {
+    private Identity[] identities;
     public static bool AreSameFace(FacialFeatures faceA, FacialFeatures faceB)
     {
         return faceA.Equals(faceB);
@@ -65,12 +66,30 @@ public class Authenticator
 
     public bool Register(Identity identity)
     {
-        throw new NotImplementedException("Please implement the Authenticator.Register() method");
+        if (!IsRegistered(identity))
+        {
+            if (identities == null)
+            {
+                identities = [identity];
+                return true;
+            }
+            Array.Resize(ref identities, identities.Length + 1);
+            identities[identities.Length - 1] = identity;
+            return true;
+        }
+        return false;
     }
 
     public bool IsRegistered(Identity identity)
     {
-        throw new NotImplementedException("Please implement the Authenticator.IsRegistered() method");
+        if (identities == null)
+            return false;
+        for (int i = 0; i < identities.Length; i++)
+        {
+            if (identities[i].Equals(identity))
+                return true;
+        }
+        return false;
     }
 
     public static bool AreSameObject(Identity identityA, Identity identityB)
