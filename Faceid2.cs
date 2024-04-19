@@ -40,7 +40,15 @@ public class Identity
         Email = email;
         FacialFeatures = facialFeatures;
     }
-    // TODO: implement equality and GetHashCode() methods
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+        return FacialFeatures.Equals(((Identity)obj).FacialFeatures) && Email == ((Identity)obj).Email;
+    }
+    // TODO: implement GetHashCode() methods
 }
 
 public class Authenticator
@@ -52,7 +60,7 @@ public class Authenticator
 
     public bool IsAdmin(Identity identity)
     {
-        throw new NotImplementedException("Please implement the Authenticator.IsAdmin() method");
+        return identity.Equals(new Identity("admin@exerc.ism", new FacialFeatures("green", 0.9m)));
     }
 
     public bool Register(Identity identity)
