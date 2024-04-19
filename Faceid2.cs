@@ -1,10 +1,12 @@
 using System;
 using System.Numerics;
+using System.Security.Cryptography;
 
 public class FacialFeatures
 {
     public string EyeColor { get; }
     public decimal PhiltrumWidth { get; }
+    private int hashCode = RandomNumberGenerator.GetInt32(Int32.MaxValue);
 
     public FacialFeatures(string eyeColor, decimal philtrumWidth)
     {
@@ -20,20 +22,17 @@ public class FacialFeatures
         return ((FacialFeatures)obj).EyeColor == EyeColor && ((FacialFeatures)obj).PhiltrumWidth == PhiltrumWidth;
     }
 
-    // override object.GetHashCode
     public override int GetHashCode()
     {
-        // TODO: write your implementation of GetHashCode() here
-        throw new NotImplementedException();
-        return base.GetHashCode();
+        return hashCode;
     }
-    // TODO: implement GetHashCode() methods
 }
 
 public class Identity
 {
     public string Email { get; }
     public FacialFeatures FacialFeatures { get; }
+    int hashCode = RandomNumberGenerator.GetInt32(Int32.MaxValue);
 
     public Identity(string email, FacialFeatures facialFeatures)
     {
@@ -48,10 +47,13 @@ public class Identity
         }
         return FacialFeatures.Equals(((Identity)obj).FacialFeatures) && Email == ((Identity)obj).Email;
     }
-    // TODO: implement GetHashCode() methods
+    public override int GetHashCode()
+    {
+        return hashCode;
+    }
 }
 
-public class Authenticator
+    public class Authenticator
 {
     private Identity[] identities;
     public static bool AreSameFace(FacialFeatures faceA, FacialFeatures faceB)
@@ -94,6 +96,6 @@ public class Authenticator
 
     public static bool AreSameObject(Identity identityA, Identity identityB)
     {
-        throw new NotImplementedException("Please implement the Authenticator.AreSameObject() method");
+        return identityA.GetHashCode() == identityB.GetHashCode();
     }
 }
