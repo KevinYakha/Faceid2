@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 public class FacialFeatures
 {
@@ -10,7 +11,23 @@ public class FacialFeatures
         EyeColor = eyeColor;
         PhiltrumWidth = philtrumWidth;
     }
-    // TODO: implement equality and GetHashCode() methods
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+        return ((FacialFeatures)obj).EyeColor == EyeColor && ((FacialFeatures)obj).PhiltrumWidth == PhiltrumWidth;
+    }
+
+    // override object.GetHashCode
+    public override int GetHashCode()
+    {
+        // TODO: write your implementation of GetHashCode() here
+        throw new NotImplementedException();
+        return base.GetHashCode();
+    }
+    // TODO: implement GetHashCode() methods
 }
 
 public class Identity
@@ -30,7 +47,7 @@ public class Authenticator
 {
     public static bool AreSameFace(FacialFeatures faceA, FacialFeatures faceB)
     {
-        throw new NotImplementedException("Please implement the (static) Authenticator.AreSameFace() method");
+        return faceA.Equals(faceB);
     }
 
     public bool IsAdmin(Identity identity)
